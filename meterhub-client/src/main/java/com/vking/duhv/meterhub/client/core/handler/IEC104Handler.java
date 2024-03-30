@@ -103,7 +103,12 @@ public class IEC104Handler extends TCPHandler {
                     //sAct(ctx.channel());
                     //reconnect();
                 }
-                this.conn.getMeterHubServerClient().send(StrUtil.format(Constant.METER_JSON_TEMP, this.config.getHost(), Constant.DATA_PROTOCOL_IEC104, String.valueOf(hex)));
+                this.conn.getMeterHubServerClient().send(StrUtil.format(Constant.METER_JSON_TEMP,
+                        this.config.getHost(),
+                        this.config.getCode(),
+                        Constant.DATA_PROTOCOL_IEC104,
+                        String.valueOf(hex)
+                ));
             }
             case U -> {
                 //start_con确认开始传输

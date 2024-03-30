@@ -5,6 +5,7 @@ public class Constant {
     public static final String METER_JSON_TEMP = """
             {
                 "from":"{}",
+                "code":"{}",
                 "protocol":"{}",
                 "data":"{}"
             }

@@ -126,8 +126,9 @@ public class KafkaConnection extends SubSystemConnection {
                     for (ConsumerRecord<String, String> record : records) {
                         long timestamp = record.timestamp();
                         Meter meter = new Meter();
-                        meter.setFrom("192.168.1.1");
-                        meter.setProtocol("KAFKA");
+                        meter.setFrom(config.getHost());
+                        meter.setCode(config.getCode());
+                        meter.setProtocol(config.getDataProtocol());
                         meter.setData(record.value());
                         String msg = mapper.writeValueAsString(meter);
                         mqHandler.receive(msg);
