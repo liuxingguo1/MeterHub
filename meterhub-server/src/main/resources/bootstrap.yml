@@ -1,0 +1,6 @@
+spring.application.name: meterhub-server
+
+spring.cloud.nacos.config:
+  server-addr: ${NACOS_HOST:nacos-server}:${NACOS_PORT:8848}
+  file-extension: yml
+  namespace: ${NACOS_CONFIG_NAMESPACE:duhv}

@@ -1,0 +1,48 @@
+{
+  "type": "kafka",
+  "spec": {
+    "dataSchema": {
+      "dataSource": "duhv_event_metric",
+      "timestampSpec": {
+        "column": "eventTime",
+        "format": "auto"
+      },
+      "dimensionsSpec": {
+        "dimensions": [
+          { "type": "long", "name": "cid" },
+          { "type": "long", "name": "stationId" },
+          { "type": "string", "name": "measureType" },
+          { "type": "long", "name": "deviceId" },
+          { "type": "long", "name": "pointMonitorId" },
+          { "type": "timestamp", "name": "obtainTime" }
+        ],
+        "dimensionExclusions": [ "__time", "val", "time" ]
+      },
+      "metricsSpec": [
+        { "type": "floatSum", "name": "val", "fieldName": "val" }
+      ],
+      "granularitySpec": {
+        "type": "uniform",
+        "segmentGranularity": "DAY",
+        "queryGranularity": {
+          "type": "none"
+        },
+        "rollup": false
+      }
+    },
+    "ioConfig": {
+      "topic": "duhv_event_metric",
+      "inputFormat": {
+        "type": "json"
+      },
+      "consumerProperties": {
+        "bootstrap.servers": "192.168.3.100:9092"
+      },
+      "stream": "duhv_event_metric",
+      "type": "kafka"
+    },
+    "tuningConfig": {
+      "type": "kafka"
+    }
+  }
+}

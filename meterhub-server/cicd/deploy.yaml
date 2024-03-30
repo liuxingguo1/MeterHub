@@ -1,0 +1,62 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: $APP_NAME
+  namespace: $NAMESPACE
+spec:
+  progressDeadlineSeconds: 600
+  replicas: $APP_REPLICAS
+  revisionHistoryLimit: 10
+  selector:
+    matchLabels:
+      app: $APP_NAME
+  strategy:
+    rollingUpdate:
+      maxSurge: 25%
+      maxUnavailable: 25%
+    type: RollingUpdate
+  template:
+    metadata:
+      labels:
+        app: $APP_NAME
+    spec:
+      imagePullSecrets:
+        - name: harborsecret
+      containers:
+        - image: $IMAGE_NAME
+          imagePullPolicy: IfNotPresent
+          name: $APP_NAME
+          resources:
+            requests:
+              memory: $PODMEMORY
+            limits:
+              memory: $PODMEMORY
+            initialDelaySeconds: 40
+            periodSeconds: 5
+            successThreshold: 1
+            timeoutSeconds: 2
+          env:
+            - name: NACOS_HOST
+              valueFrom:
+                configMapKeyRef:
+                  name: app.conf
+                  key: nacos_host
+            - name: NACOS_PORT
+              valueFrom:
+                configMapKeyRef:
+                  name: app.conf
+                  key: nacos_port
+            - name: CLUSTER_WEIGHT
+              valueFrom:
+                configMapKeyRef:
+                  name: app.conf
+                  key: cluster_weight
+          volumeMounts:
+            - mountPath: /opt/$APP_NAME/logs/
+              name: app-logs
+      restartPolicy: Always
+      volumes:
+        - hostPath:
+            path: /data/logs/$APP_NAME/
+            type: ""
+          name: app-logs
