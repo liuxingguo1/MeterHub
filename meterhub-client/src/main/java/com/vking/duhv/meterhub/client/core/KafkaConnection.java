@@ -129,6 +129,7 @@ public class KafkaConnection extends SubSystemConnection {
                         meter.setFrom(config.getHost());
                         meter.setCode(config.getCode());
                         meter.setProtocol(config.getDataProtocol());
+                        meter.setTime(System.currentTimeMillis());
                         meter.setData(record.value());
                         String msg = mapper.writeValueAsString(meter);
                         mqHandler.receive(msg);

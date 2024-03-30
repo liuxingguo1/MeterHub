@@ -107,6 +107,7 @@ public class IEC104Handler extends TCPHandler {
                         this.config.getHost(),
                         this.config.getCode(),
                         Constant.DATA_PROTOCOL_IEC104,
+                        System.currentTimeMillis(),
                         String.valueOf(hex)
                 ));
             }

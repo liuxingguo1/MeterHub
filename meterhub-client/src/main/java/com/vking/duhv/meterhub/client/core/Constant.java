@@ -7,6 +7,7 @@ public class Constant {
                 "from":"{}",
                 "code":"{}",
                 "protocol":"{}",
+                "time":"{}",
                 "data":"{}"
             }
             """;

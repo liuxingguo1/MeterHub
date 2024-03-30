@@ -8,6 +8,7 @@ public class Meter {
     private String from;
     private String code;
     private String protocol;
+    private Long time;
     private String data;
 
 }
