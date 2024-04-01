@@ -46,7 +46,7 @@ public class MessageInfo {
 	/**
 	 *
 	 */
-	private String time;
+	private Date time;
 
 	/**
 	 * 品质描述（IV=0,表示值有效）
