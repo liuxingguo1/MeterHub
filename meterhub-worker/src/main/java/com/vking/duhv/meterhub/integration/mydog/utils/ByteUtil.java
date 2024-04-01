@@ -2,8 +2,11 @@ package com.vking.duhv.meterhub.integration.mydog.utils;
 
 import com.vking.duhv.meterhub.integration.mydog.analyse103.enums.UControlEnum;
 import io.netty.buffer.Unpooled;
+import lombok.SneakyThrows;
 
 import java.io.ByteArrayOutputStream;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
@@ -709,31 +712,25 @@ public class ByteUtil {
      * @param b 时标CP56Time2a（长度为7 的int数组）
      * @return 解析结果
      */
-    public static Date TimeScaleForSeven(int b[]) {
-        String str = "";
-        int year = (b[6] & 0x7F)+ 2000;
-        int month = b[5] & 0x0F;
-        int day = b[4] & 0x1F;
-        int week = (b[4] & 0xE0) / 32;
-        int hour = b[3] & 0x1F;
-        int minute = b[2] & 0x3F;
-        int second = (b[1] << 8) + b[0];
-        Calendar calendar = Calendar.getInstance();
-        calendar.set(Calendar.YEAR, year);
-        calendar.set(Calendar.MONTH, month);
-        calendar.set(Calendar.DATE, day);
-        calendar.set(Calendar.HOUR, hour);
-        calendar.set(Calendar.MINUTE, minute);
-        calendar.set(Calendar.SECOND, second/1000);
-        Date date = calendar.getTime();
-//		teleSignallingInfoEntity.setTime(date);
-//		SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
-//		System.out.println(simpleDateFormat.format(date));
-//		str += "时标CP56Time2a:" + year + "-"
-//				+ String.format("%02d", month) + "-"
-//				+ String.format("%02d", day) + "," + hour + ":" + minute + ":"
-//				+ second / 1000 + "." + second % 1000;
-//		return str + "\n";
+    @SneakyThrows
+    public static Date TimeScaleForSeven(int b[])  {
+        int milliseconds1 = b[0] < 0 ? 256 + b[0] : b[0];
+        int milliseconds2 = b[1] < 0 ? 256 + b[1] : b[1];
+        int milliseconds = milliseconds2 * 256 + milliseconds1 ;
+        // 位于 0011 1111
+        int minutes = b[2] & 0x3F;
+        // 位于 0001 1111
+        int hours = b[3] & 0x1F;
+        // 位于 0001 1111
+        int days = b[4] & 0x1F;
+        // 位于 0000 1111
+        int months = b[5] & 0x0F;
+        // 位于 0111 1111
+        int years = b[6] & 0x7F;
+        String time = "20" + String.format("%02d", years) + "-" + String.format("%02d", months) + "-" + String.format("%02d", days) +
+                " " + String.format("%02d", hours) + ":" + String.format("%02d", minutes) + ":" +
+                String.format("%02d", milliseconds / 1000);
+        Date date = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss").parse(time);
         return date;
     }
 

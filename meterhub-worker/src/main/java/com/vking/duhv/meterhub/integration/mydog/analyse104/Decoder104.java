@@ -107,9 +107,9 @@ public class Decoder104 {
 //					// 判断是否有限定词
 //					messageObj.setQualifiers(QualifiersEnum.getQualifiersEnum(ruleDetail104.getTypeIdentifier(), bytes[mesageIndex++]));
 //				}
-				if (ruleDetail104.isTimeScaleExit()) {
-					ruleDetail104.setTimeScale(ByteUtil.byte2Hdate(ByteUtil.getByte(bytes, mesageIndex, 7)));
-				}
+//				if (ruleDetail104.isTimeScaleExit()) {
+//					ruleDetail104.setTimeScale(ByteUtil.byte2Hdate(ByteUtil.getByte(bytes, mesageIndex, 7)));
+//				}
 				messageSize++;
 				messageAddress++;
 				messages.add(messageObj);
@@ -155,9 +155,9 @@ public class Decoder104 {
 //				// 判断是否有限定词
 //				messageObj.setQualifiers(QualifiersEnum.getQualifiersEnum(ruleDetail104.getTypeIdentifier(), bytes[mesageIndex++]));
 //			}
-			if (ruleDetail104.isTimeScaleExit()) {
-				messageObj.setTimeScale(ByteUtil.byte2Hdate(ByteUtil.getByte(bytes, mesageIndex, 7)));
-			} 
+//			if (ruleDetail104.isTimeScaleExit()) {
+//				messageObj.setTimeScale(ByteUtil.byte2Hdate(ByteUtil.getByte(bytes, mesageIndex, 7)));
+//			}
 			messageSize++;
 			messages.add(messageObj);
 		}
@@ -200,10 +200,8 @@ public class Decoder104 {
 				messageObj.setIV(Integer.valueOf(String.valueOf(IV1),16));
 				//解析绝对时间（7个字节时间组）
 				byte[] time = ByteUtil.getByte(messageObj.getMessageInfos(), 5, 7);
-				SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
-
 				int[] ints = ByteUtil.hexStringToIntArray(ByteUtil.byteArrayToHexString(time));
-				messageObj.setTime(simpleDateFormat.format(ByteUtil.TimeScaleForSeven(ints)));
+				messageObj.setTime(ByteUtil.TimeScaleForSeven(ints));
 				break;
 			case  0x66:
 				// 读单个参数
