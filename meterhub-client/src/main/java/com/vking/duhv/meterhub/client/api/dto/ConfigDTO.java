@@ -1,9 +1,6 @@
 package com.vking.duhv.meterhub.client.api.dto;
 
-import com.vking.duhv.meterhub.client.core.conf.KafkaConfig;
-import com.vking.duhv.meterhub.client.core.conf.TCPConfig;
-import com.vking.duhv.meterhub.client.core.conf.TCPIEC103Config;
-import com.vking.duhv.meterhub.client.core.conf.TCPIEC104Config;
+import com.vking.duhv.meterhub.client.core.conf.*;
 import lombok.Data;
 
 @Data
@@ -18,7 +15,9 @@ public class ConfigDTO {
     private Integer port;
     private String topic;
     private String group;
-
+    private String userName;
+    private String password;
+    private Long cycleSeconds;//FTP 文件采集周期
     public TCPConfig toTCPConfig() {
         TCPConfig config = new TCPConfig();
         config.setName(name);
@@ -27,6 +26,21 @@ public class ConfigDTO {
         config.setDataProtocol(dataProtocol);
         config.setHost(host);
         config.setPort(port);
+        return config;
+    }
+
+    public FTPConfig toFTPConfig() {
+        FTPConfig config = new FTPConfig();
+        config.setName(name);
+        config.setCode(code);
+        config.setCommProtocol(commProtocol);
+        config.setDataProtocol(dataProtocol);
+        config.setHost(host);
+        config.setPort(port);
+
+        config.setUserName(userName);
+        config.setPassword(password);
+        config.setCycleSeconds(cycleSeconds);
         return config;
     }
 

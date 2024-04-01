@@ -28,10 +28,10 @@ public class TCPConnection extends SubSystemConnection {
     private ByteToMessageDecoder decoder;
 
     @JsonIgnore
-    private TCPConnection.SimpleChannelFutureListener listener = new TCPConnection.SimpleChannelFutureListener();
+    private SimpleChannelFutureListener listener = new SimpleChannelFutureListener();
 
     @JsonIgnore
-    private TCPConnection.SimpleChannelCloseFutureListener closeListener = new TCPConnection.SimpleChannelCloseFutureListener();
+    private SimpleChannelCloseFutureListener closeListener = new SimpleChannelCloseFutureListener();
 
     @JsonIgnore
     private EventLoopGroup group;

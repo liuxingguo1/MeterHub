@@ -5,10 +5,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.SerializationFeature;
 import com.vking.duhv.meterhub.client.api.dto.ConfigDTO;
 import com.vking.duhv.meterhub.client.core.decoder.IEC104Decoder;
-import com.vking.duhv.meterhub.client.core.handler.CommonTCPHandler;
-import com.vking.duhv.meterhub.client.core.handler.IEC103Handler;
-import com.vking.duhv.meterhub.client.core.handler.IEC104Handler;
-import com.vking.duhv.meterhub.client.core.handler.KafkaHandler;
+import com.vking.duhv.meterhub.client.core.handler.*;
 import com.vking.duhv.meterhub.client.serverclient.MeterHubServerClient;
 import jakarta.annotation.PostConstruct;
 import lombok.extern.slf4j.Slf4j;
@@ -90,11 +87,13 @@ public class ConnectionManager {
         if (Constant.COMM_PROTOCOL_KAFKA.equals(config.getCommProtocol()) && Constant.DATA_PROTOCOL_JSON.equals(config.getDataProtocol())) {
             conn = new KafkaConnection(config.toKafkaConfig(), meterHubServerClient, mapper, KafkaHandler.class);
         } else if (Constant.COMM_PROTOCOL_TCP.equals(config.getCommProtocol()) && Constant.DATA_PROTOCOL_IEC104.equals(config.getDataProtocol())) {
-            conn = new TCPConnection(config.toTCPIEC104Config(), meterHubServerClient, IEC104Handler.class,  IEC104Decoder.class);
+            conn = new TCPConnection(config.toTCPIEC104Config(), meterHubServerClient, IEC104Handler.class, IEC104Decoder.class);
         } else if (Constant.COMM_PROTOCOL_TCP.equals(config.getCommProtocol()) && Constant.DATA_PROTOCOL_IEC103.equals(config.getDataProtocol())) {
             conn = new TCPConnection(config.toTCPIEC103Config(), meterHubServerClient, IEC103Handler.class);
         } else if (Constant.COMM_PROTOCOL_TCP.equals(config.getCommProtocol()) && Constant.DATA_PROTOCOL_IEC000.equals(config.getDataProtocol())) {
             conn = new TCPConnection(config.toTCPConfig(), meterHubServerClient, CommonTCPHandler.class);
+        } else if (Constant.COMM_PROTOCOL_FTP.equals(config.getCommProtocol()) && Constant.DATA_PROTOCOL_FILE_GZLB.equals(config.getDataProtocol())) {
+            conn = new SFTPConnection(config.toFTPConfig(), meterHubServerClient, CommonFTPHandler.class);
         }
 
         if (conn != null) {
