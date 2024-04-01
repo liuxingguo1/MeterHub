@@ -401,6 +401,14 @@ public class ByteUtil {
         return ints;
     }
 
+    public static int[] byteToIntArr(byte[] bytes) {
+        int[] ints = new int[bytes.length];
+        for (int i = 0;i<bytes.length;i++){
+            ints[i] = bytes[i];
+        }
+        return ints;
+    }
+
     public static double[] intToDouble(int[] ints) {
         int length = ints.length;
         double[] doubles = new double[length];
