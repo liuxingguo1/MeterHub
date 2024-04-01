@@ -15,7 +15,9 @@ import java.util.List;
  */
 @Data
 public class MessageDetail {
-	
+
+	private String subsystemCode;
+
 	/**
 	 * 启动字符 固定 一个字节
 	 */

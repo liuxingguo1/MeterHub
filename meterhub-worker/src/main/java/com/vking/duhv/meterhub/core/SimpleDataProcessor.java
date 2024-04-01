@@ -5,7 +5,6 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.vking.duhv.meterhub.common.Meter;
 import com.vking.duhv.meterhub.integration.mydog.analyse104.Decoder104;
 import com.vking.duhv.meterhub.integration.mydog.analyse104.message.MessageDetail;
-import com.vking.duhv.meterhub.integration.mydog.analyse104.message.MessageInfo;
 import com.vking.duhv.meterhub.integration.mydog.utils.ByteUtil;
 import com.vking.duhv.meterhub.kafka.KafkaSender;
 import lombok.extern.slf4j.Slf4j;
@@ -34,9 +33,7 @@ public class SimpleDataProcessor implements DataProcessor{
         switch (protocal){
             case "IEC104":
                 MessageDetail messageDetail = decoder104.encoder(ByteUtil.hexStringToBytes(meter.getData()));
-                for (MessageInfo info : messageDetail.getMessages()){
-                    info.setSubsystemCode(meter.getCode());
-                }
+                messageDetail.setSubsystemCode(meter.getCode());
                 String json = mapper.writeValueAsString(messageDetail);
                 kafkaSender.send(Constant.TOPIC_SHENGYUDIANLIU,"shengyudianliu", json);
                 System.out.println("104解析结果为:" + messageDetail);
