@@ -13,6 +13,8 @@ public class FTPConfig extends ConnectionConfig {
 
     private String remotePath;//ftp服务器上文件目录
     private String localPath;//本地暂存目录
+    private Boolean cleanRemote;//清理使用过的远程文件
+    private String destinationPath;//传输到sftp的路径
 
 
 

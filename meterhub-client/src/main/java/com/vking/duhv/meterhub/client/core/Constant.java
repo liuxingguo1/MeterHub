@@ -26,6 +26,7 @@ public class Constant {
 
     public static final String DATA_PROTOCOL_IEC104 = "IEC104";
 
+    public static final String DATA_PROTOCOL_FILE = "FILE";
     public static final String DATA_PROTOCOL_FILE_GZLB = "FILE_GZLB";
 
 

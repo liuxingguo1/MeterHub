@@ -4,6 +4,12 @@ meterhub.server.socket:
   host: ${METERHUB_SERVER_HOST:127.0.0.1}
   port: ${METERHUB_SERVER_PORT:9999}
 
+meterhub.server.sftp:
+  host: ${METERHUB_SERVER_SFTP_HOST:10.1.1.4}
+  port: ${METERHUB_SERVER_SFTP_PORT:10012}
+  user: ${METERHUB_SERVER_SFTP_USER:vking}
+  password: ${METERHUB_SERVER_SFTP_PASSWORD:Vking1357!}
+
 logging.level:
   root: INFO
   com.vking: DEBUG

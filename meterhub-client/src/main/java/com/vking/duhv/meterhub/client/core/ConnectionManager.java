@@ -93,7 +93,7 @@ public class ConnectionManager {
         } else if (Constant.COMM_PROTOCOL_TCP.equals(config.getCommProtocol()) && Constant.DATA_PROTOCOL_IEC000.equals(config.getDataProtocol())) {
             conn = new TCPConnection(config.toTCPConfig(), meterHubServerClient, CommonTCPHandler.class);
         } else if (Constant.COMM_PROTOCOL_FTP.equals(config.getCommProtocol()) && Constant.DATA_PROTOCOL_FILE_GZLB.equals(config.getDataProtocol())) {
-            conn = new SFTPConnection(config.toFTPConfig(), meterHubServerClient, CommonFTPHandler.class);
+            conn = new SFTPConnection(config.toFTPConfig(), meterHubServerClient, SFtpGZLBHandller.class);
         }
 
         if (conn != null) {
