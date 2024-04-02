@@ -17,11 +17,6 @@ public class ConfigDTO {
     private String group;
     private String userName;
     private String password;
-    private Long cycleSeconds;//FTP 文件采集周期
-    private String remotePath;//ftp服务器上文件目录
-    private String localPath;//本地暂存目录
-    private Boolean cleanRemote;//清理使用过的远程文件
-    private String destinationPath;//传输到sftp的路径
 
     public TCPConfig toTCPConfig() {
         TCPConfig config = new TCPConfig();
@@ -45,11 +40,6 @@ public class ConfigDTO {
 
         config.setUserName(userName);
         config.setPassword(password);
-        config.setCycleSeconds(cycleSeconds);
-        config.setRemotePath(remotePath);
-        config.setLocalPath(localPath);
-        config.setCleanRemote(cleanRemote);
-        config.setDestinationPath(destinationPath);
         return config;
     }
 
