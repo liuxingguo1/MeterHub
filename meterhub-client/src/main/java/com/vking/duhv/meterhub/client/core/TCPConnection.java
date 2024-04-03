@@ -100,7 +100,7 @@ public class TCPConnection extends SubSystemConnection {
     private void doStart() {
         try {
             Bootstrap bootstrap = new Bootstrap();
-            group = new NioEventLoopGroup();
+            group = new NioEventLoopGroup(1);
             bootstrap.group(group)
                     .channel(NioSocketChannel.class)
                     /*

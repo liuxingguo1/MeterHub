@@ -18,7 +18,7 @@ import java.util.concurrent.TimeUnit;
 @Slf4j
 public class MeterHubServerClient {
 
-    private final EventLoopGroup group = new NioEventLoopGroup();
+    private final EventLoopGroup group = new NioEventLoopGroup(1);
 
     private SimpleChannelFutureListener listener = new SimpleChannelFutureListener();
 
