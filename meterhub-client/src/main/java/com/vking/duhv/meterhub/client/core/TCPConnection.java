@@ -211,8 +211,10 @@ public class TCPConnection extends SubSystemConnection {
     class SimpleChannelFutureListener implements ChannelFutureListener {
         @Override
         public void operationComplete(ChannelFuture channelFuture) {
-            setStatus(1);
-            log.info("{}[{}], 连接成功, IP:{}, PORT:{}", config.getName(), config.getCode(), config.getHost(), config.getPort());
+            if (channelFuture.isSuccess()) {
+                setStatus(1);
+                log.info("{}[{}], 连接成功, IP:{}, PORT:{}", config.getName(), config.getCode(), config.getHost(), config.getPort());
+            }
         }
     }
 
