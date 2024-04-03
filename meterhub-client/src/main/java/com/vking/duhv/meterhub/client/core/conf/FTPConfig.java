@@ -13,11 +13,11 @@ public class FTPConfig extends ConnectionConfig {
     private Integer port;
     private String userName;
     private String password;
-    private Long cycleSeconds = 60L;
-    private String remotePath = "/root/data/COMTRADE";//ftp服务器上文件目录
-    private String localPath = System.getProperty("user.dir") + File.separator + "COMTRADE";//本地暂存目录
-    private Boolean cleanRemote = true;//清理使用过的远程文件
-    private String destinationPath = "/COMTRADE";//传输到sftp的路径
+    private final Long cycleSeconds = 60L;
+    private final String remotePath = "/root/data/COMTRADE";//ftp服务器上文件目录
+    private final String localPath = System.getProperty("user.dir") + File.separator + "COMTRADE";//本地暂存目录
+    private final Boolean cleanRemote = true;//清理使用过的远程文件
+    private final String destinationPath = "/COMTRADE";//传输到sftp的路径
 
     public FTPConfig() {
         if (!new File(localPath).exists()) {

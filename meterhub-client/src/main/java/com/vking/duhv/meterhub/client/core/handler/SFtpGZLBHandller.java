@@ -24,7 +24,7 @@ import java.util.*;
 public class SFtpGZLBHandller extends FTPHandler {
     private SFTPConnection con;
     private FTPConfig config;
-    private Timer timer = new Timer();
+    private Timer timer = new Timer("故障录波定时任务");
     TimerTask task = new TimerTask() {
         SSHClient sshClient;
         SFTPClient sftpClient;
@@ -47,25 +47,26 @@ public class SFtpGZLBHandller extends FTPHandler {
                     }
                 }
                 log.info("故障录波文件下载完成,数量：{}", fileNames.size());
-
-                Set<String> successSet = sendToSftp(config.getDestinationPath(), fileNames);
-                log.info("故障录波文件传输完成,数量：{}", successSet.size());
-                if (config.getCleanRemote()) {
-                    //传输完成删除远程服务器数据
-                    for (RemoteResourceInfo file : files) {
-                        if (successSet.contains(file.getName())) {
-                            sftpClient.rm(file.getPath());
+                if (fileNames.size() != 0) {
+                    Set<String> successSet = sendToSftp(config.getDestinationPath(), fileNames);
+                    log.info("故障录波文件传输完成,数量：{}", successSet.size());
+                    if (config.getCleanRemote()) {
+                        //传输完成删除远程服务器数据
+                        for (RemoteResourceInfo file : files) {
+                            if (successSet.contains(file.getName())) {
+                                sftpClient.rm(file.getPath());
+                            }
                         }
                     }
+                    con.getClient().send(StrUtil.format(Constant.METER_JSON_TEMP,
+                            config.getHost(),
+                            config.getCode(),
+                            Constant.DATA_PROTOCOL_FILE_GZLB,
+                            System.currentTimeMillis(),
+                            fileNames
+                    ));
+                    log.info("故障录波文件通知完成");
                 }
-                con.getClient().send(StrUtil.format(Constant.METER_JSON_TEMP,
-                        config.getHost(),
-                        config.getCode(),
-                        Constant.DATA_PROTOCOL_FILE_GZLB,
-                        System.currentTimeMillis(),
-                        fileNames
-                ));
-                log.info("故障录波文件通知完成");
             } catch (Exception ex) {
                 log.error("{}[{}}], 故障录波文件传输错误, IP:{}, PORT:{}", config.getName(), config.getCode(), config.getHost(), config.getPort());
                 ex.printStackTrace();

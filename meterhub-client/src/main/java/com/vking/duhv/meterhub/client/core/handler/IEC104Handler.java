@@ -65,7 +65,7 @@ public class IEC104Handler extends TCPHandler {
     @Override
     public void channelActive(ChannelHandlerContext ctx) {
         log.debug("通道准备就绪");
-        timer = new Timer();
+        timer = new Timer("IEC104定时器");
         uStartAct();
         resetT2SAckTask();
         resetT3FreeTimeoutTask();
