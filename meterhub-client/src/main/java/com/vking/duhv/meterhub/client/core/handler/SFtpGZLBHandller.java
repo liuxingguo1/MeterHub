@@ -7,7 +7,7 @@ import com.vking.duhv.meterhub.client.config.SftpConfig;
 import com.vking.duhv.meterhub.client.core.Constant;
 import com.vking.duhv.meterhub.client.core.FTPHandler;
 import com.vking.duhv.meterhub.client.core.SFTPConnection;
-import com.vking.duhv.meterhub.client.core.conf.FTPConfig;
+import com.vking.duhv.meterhub.client.core.conf.FTPGZLBConfig;
 import com.vking.duhv.meterhub.client.util.Ftps;
 import lombok.extern.slf4j.Slf4j;
 import net.schmizz.sshj.SSHClient;
@@ -23,7 +23,7 @@ import java.util.*;
 @Slf4j
 public class SFtpGZLBHandller extends FTPHandler {
     private SFTPConnection con;
-    private FTPConfig config;
+    private FTPGZLBConfig config;
     private Timer timer = new Timer("故障录波定时任务");
     TimerTask task = new TimerTask() {
         SSHClient sshClient;
@@ -100,7 +100,7 @@ public class SFtpGZLBHandller extends FTPHandler {
     @Override
     public void init(SFTPConnection con) {
         this.con = con;
-        this.config = con.getConfig();
+        this.config = (FTPGZLBConfig) con.getConfig();
     }
 
 

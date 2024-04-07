@@ -28,9 +28,21 @@ public class ConfigDTO {
         config.setPort(port);
         return config;
     }
-
     public FTPConfig toFTPConfig() {
         FTPConfig config = new FTPConfig();
+        config.setName(name);
+        config.setCode(code);
+        config.setCommProtocol(commProtocol);
+        config.setDataProtocol(dataProtocol);
+        config.setHost(host);
+        config.setPort(port);
+
+        config.setUserName(userName);
+        config.setPassword(password);
+        return config;
+    }
+    public FTPGZLBConfig toFTPGZLBConfig() {
+        FTPGZLBConfig config = new FTPGZLBConfig();
         config.setName(name);
         config.setCode(code);
         config.setCommProtocol(commProtocol);

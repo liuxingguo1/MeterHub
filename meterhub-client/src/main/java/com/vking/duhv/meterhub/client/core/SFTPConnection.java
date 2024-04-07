@@ -2,6 +2,7 @@ package com.vking.duhv.meterhub.client.core;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.vking.duhv.meterhub.client.core.conf.FTPConfig;
+import com.vking.duhv.meterhub.client.core.conf.FTPGZLBConfig;
 import com.vking.duhv.meterhub.client.serverclient.MeterHubServerClient;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
@@ -20,7 +21,7 @@ public class SFTPConnection extends SubSystemConnection {
     private FTPHandler handler;
 
 
-    public SFTPConnection(FTPConfig config, MeterHubServerClient client, Class<? extends FTPHandler> handlerClazz) {
+    public SFTPConnection(FTPGZLBConfig config, MeterHubServerClient client, Class<? extends FTPHandler> handlerClazz) {
         this.config = config;
         this.client = client;
         this.handlerClazz = handlerClazz;
@@ -59,7 +60,7 @@ public class SFTPConnection extends SubSystemConnection {
 
     @Override
     public void rest(ConnectionConfig config) {
-        this.config = (FTPConfig) config;
+        this.config = (FTPGZLBConfig) config;
         this.setId(config.getCode());
         this.rest();
     }
