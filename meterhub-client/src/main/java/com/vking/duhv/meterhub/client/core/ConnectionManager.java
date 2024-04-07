@@ -27,17 +27,20 @@ import java.util.concurrent.TimeUnit;
 @Component
 public class ConnectionManager {
 
-    private final String dbFile = "MeterHubClientConnections.json";
+    private static final String dbFile = "MeterHubClientConnections.json";
 
-    @Autowired
-    private ObjectMapper mapper;
+    private static ObjectMapper mapper;
 
-    private Map<String, SubSystemConnection> connectionMap = new HashMap<>();
+    private static final Map<String, SubSystemConnection> connectionMap = new HashMap<>();
 
     @Autowired
     private MeterHubServerClient meterHubServerClient;
 
     private ExecutorService executorService = new ThreadPoolExecutor(5, 50, 0L, TimeUnit.MILLISECONDS, new SynchronousQueue<>());
+
+    public ConnectionManager(ObjectMapper mapper) {
+        this.mapper = mapper;
+    }
 
     @PostConstruct
     public void init() {
@@ -60,7 +63,7 @@ public class ConnectionManager {
 
     }
 
-    private Boolean save() {
+    public static Boolean save() {
         List<ConnectionConfig> list = new ArrayList<>();
         for (SubSystemConnection conn : connectionMap.values()) {
             list.add(conn.getCofig());

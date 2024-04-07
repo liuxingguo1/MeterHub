@@ -3,6 +3,8 @@ package com.vking.duhv.meterhub.client.api.dto;
 import com.vking.duhv.meterhub.client.core.conf.*;
 import lombok.Data;
 
+import java.util.Map;
+
 @Data
 public class ConfigDTO {
 
@@ -17,6 +19,7 @@ public class ConfigDTO {
     private String group;
     private String userName;
     private String password;
+    private Map<String, Object> data;
 
     public TCPConfig toTCPConfig() {
         TCPConfig config = new TCPConfig();
@@ -26,8 +29,10 @@ public class ConfigDTO {
         config.setDataProtocol(dataProtocol);
         config.setHost(host);
         config.setPort(port);
+        config.setData(data);
         return config;
     }
+
     public FTPConfig toFTPConfig() {
         FTPConfig config = new FTPConfig();
         config.setName(name);
@@ -39,8 +44,10 @@ public class ConfigDTO {
 
         config.setUserName(userName);
         config.setPassword(password);
+        config.setData(data);
         return config;
     }
+
     public FTPGZLBConfig toFTPGZLBConfig() {
         FTPGZLBConfig config = new FTPGZLBConfig();
         config.setName(name);
@@ -52,6 +59,7 @@ public class ConfigDTO {
 
         config.setUserName(userName);
         config.setPassword(password);
+        config.setData(data);
         return config;
     }
 
@@ -63,6 +71,7 @@ public class ConfigDTO {
         config.setDataProtocol(dataProtocol);
         config.setHost(host);
         config.setPort(port);
+        config.setData(data);
         return config;
     }
 
@@ -74,6 +83,7 @@ public class ConfigDTO {
         config.setDataProtocol(dataProtocol);
         config.setHost(host);
         config.setPort(port);
+        config.setData(data);
         return config;
     }
 
@@ -87,6 +97,7 @@ public class ConfigDTO {
         config.setPort(port);
         config.setTopic(topic);
         config.setGroup(group);
+        config.setData(data);
         return config;
     }
 

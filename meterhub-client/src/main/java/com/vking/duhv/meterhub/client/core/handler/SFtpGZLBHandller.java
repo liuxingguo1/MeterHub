@@ -19,11 +19,14 @@ import org.apache.commons.io.FileUtils;
 import java.io.File;
 import java.io.IOException;
 import java.util.*;
+import java.util.stream.Collectors;
 
 @Slf4j
 public class SFtpGZLBHandller extends FTPHandler {
     private SFTPConnection con;
     private FTPGZLBConfig config;
+    private final String IGNORE_SET_KEY = "ignore_set";
+    private Set<String> ignoreSet;
     private Timer timer = new Timer("故障录波定时任务");
     TimerTask task = new TimerTask() {
         SSHClient sshClient;
@@ -31,17 +34,30 @@ public class SFtpGZLBHandller extends FTPHandler {
 
         @Override
         public void run() {
+            Object cache = config.cacheGet(IGNORE_SET_KEY);
+            if (null == cache) {
+                ignoreSet = new HashSet<>();
+            } else {
+                if (cache instanceof List) {
+                    ignoreSet = new HashSet<>((List) cache);
+                } else if (cache instanceof Set) {
+                    ignoreSet = (Set) cache;
+                }
+            }
             List<String> fileNames = null;
             try {
                 SSHClient sshClient = getFtpClient();
                 SFTPClient sftpClient = sshClient.newSFTPClient();
 
-                List<RemoteResourceInfo> files = sftpClient.ls(config.getRemotePath());
+                List<RemoteResourceInfo> files = sftpClient.ls(config.getRemotePath())
+                        .stream().filter(path -> path.getName().endsWith(".hdr")
+                                || path.getName().endsWith(".dat")
+                                || path.getName().endsWith(".cfg")
+                        ).toList();
                 fileNames = new ArrayList<>(files.size());
                 for (RemoteResourceInfo file : files) {
-
                     String localPath = config.getLocalPath() + File.separator + file.getName();
-                    if (file.isRegularFile()) {
+                    if (!ignoreSet.contains(file.getName()) && file.isRegularFile()) {
                         sftpClient.get(file.getPath(), localPath);
                         fileNames.add(file.getName());
                     }
@@ -63,9 +79,14 @@ public class SFtpGZLBHandller extends FTPHandler {
                             config.getCode(),
                             Constant.DATA_PROTOCOL_FILE_GZLB,
                             System.currentTimeMillis(),
-                            fileNames
+                            successSet
                     ));
                     log.info("故障录波文件通知完成");
+                    //清理ignoreSet 保留交集
+                    Set<String> remoteFileNames = files.stream().map(m -> m.getName()).collect(Collectors.toSet());
+                    ignoreSet.addAll(successSet);
+                    ignoreSet.retainAll(remoteFileNames);
+                    config.cachePut(IGNORE_SET_KEY, ignoreSet);
                 }
             } catch (Exception ex) {
                 log.error("{}[{}}], 故障录波文件传输错误, IP:{}, PORT:{}", config.getName(), config.getCode(), config.getHost(), config.getPort());
