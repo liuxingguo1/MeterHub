@@ -11,8 +11,6 @@ import java.util.Date;
 @Data
 public class MessageInfo {
 
-	private String subsystemCode;
-
 	/**
 	 * 消息地址 字节
 	 */
